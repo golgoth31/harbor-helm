@@ -101,14 +101,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.database.external.existingSecret }}
-                key: POSTGRESQL_PASSWORD
-         {{- end }}
-         {{- if .Values.existingSecretSecretKey }}
-          - name: secretKey
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.existingSecretSecretKey }}
-                key: secretKey
+                key: password
          {{- end }}
          {{- if .Values.registry.credentials.existingSecret }}
           - name: REGISTRY_CREDENTIAL_PASSWORD
@@ -160,7 +153,11 @@ spec:
               path: app.conf
       - name: secret-key
         secret:
+          {{- if .Values.existingSecretSecretKey }}
+          secretName: {{ .Values.existingSecretSecretKey }}
+          {{- else }}
           secretName: {{ template "harbor.core" . }}
+          {{- end }}
           items:
             - key: secretKey
               path: key

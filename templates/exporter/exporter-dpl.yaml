@@ -62,7 +62,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.database.external.existingSecret }}
-              key: POSTGRESQL_PASSWORD
+              key: password
         {{- end }}
 {{- if .Values.exporter.resources }}
         resources:
